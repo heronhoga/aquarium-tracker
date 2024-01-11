@@ -15,7 +15,9 @@ func ConnectDatabase() {
 		panic(err)
 	}
 	fmt.Println("Connection Opened to Database")
-	database.AutoMigrate(&Unit{})
+
+	// Migrate the schema
+	// database.AutoMigrate(&Unit{}) 
 
 	DB = database
 }
