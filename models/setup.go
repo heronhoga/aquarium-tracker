@@ -1,8 +1,10 @@
 package models
 
 import (
-	"gorm.io/gorm"
+	"fmt"
+
 	"gorm.io/driver/mysql"
+	"gorm.io/gorm"
 )
 
 var DB *gorm.DB
@@ -12,7 +14,7 @@ func ConnectDatabase() {
 	if err != nil {
 		panic(err)
 	}
-
+	fmt.Println("Connection Opened to Database")
 	database.AutoMigrate(&Unit{})
 
 	DB = database
