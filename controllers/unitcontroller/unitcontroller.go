@@ -28,18 +28,21 @@ func IndexOne(c *gin.Context) {
 }
 
 func Create(c *gin.Context) {
+	var unit models.Unit
+	if err := c.ShouldBindJSON(&unit); err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
 
+	models.DB.Create(&unit)
+	c.JSON(http.StatusOK, gin.H{"data": unit})
 }
 
 func Update(c *gin.Context) {
-	c.JSON(200, gin.H{
-		"message": "Hello World",
-	})
+
 }
 
 func Delete(c *gin.Context) {
-	c.JSON(200, gin.H{
-		"message": "Hello World",
-	})
+
 }
 
