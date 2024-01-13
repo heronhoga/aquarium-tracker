@@ -39,7 +39,17 @@ func Create(c *gin.Context) {
 }
 
 func Update(c *gin.Context) {
+	var unit models.Unit
+	id := c.Param("id")
+	if err := c.ShouldBindJSON(&unit); err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+	}
 
+	if models.DB.Model(&unit).Where("id = ?", id).Updates(&unit).RowsAffected == 0 {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "Error updating unit"})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"message": "Unit updated successfully","data": unit})
 }
 
 func Delete(c *gin.Context) {
