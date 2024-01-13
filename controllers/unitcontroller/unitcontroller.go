@@ -1,6 +1,7 @@
 package unitcontroller
 
 import (
+	"encoding/json"
 	"go-restapi-gin-aquarium/models"
 	"net/http"
 
@@ -53,6 +54,20 @@ func Update(c *gin.Context) {
 }
 
 func Delete(c *gin.Context) {
+	var unit models.Unit
+	
+	var input struct {
+		Id json.Number
+	}
 
+	if err := c.ShouldBindJSON(&input); err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+	}
+	
+	id, _ := input.Id.Int64()
+if err := models.DB.Delete(&unit, id).Error; err != nil {
+	c.JSON(http.StatusInternalServerError, gin.H{"error": "Error deleting unit"})
+	return
 }
-
+c.JSON(http.StatusOK, gin.H{"message": "Unit deleted successfully"})
+}
